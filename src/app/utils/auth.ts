@@ -15,5 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Resend({
       from: process.env.EMAIL_FROM
     })
-  ]
+  ],
+
+  pages: {
+    verifyRequest: '/verify'
+  }
 })
