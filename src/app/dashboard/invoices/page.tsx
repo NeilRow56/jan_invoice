@@ -11,9 +11,5 @@ export default async function InvoicesPage() {
   if (!user) {
     redirect('/login')
   }
-  return (
-    <div className='h-screen bg-slate-100 p-2 dark:bg-slate-900'>
-      Invoices Page
-    </div>
-  )
+  return <div className=''>Invoices Page</div>
 }

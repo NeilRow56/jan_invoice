@@ -14,6 +14,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Resend({
       from: process.env.EMAIL_FROM
+      // Custom sendVerificationRequest() function
     })
   ],
 

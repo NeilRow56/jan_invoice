@@ -23,7 +23,7 @@ const menuItems = [
         visible: ['admin', 'manager']
       },
       {
-        icon: '/upload.png',
+        icon: '/singleClass.png',
         label: 'Invoices',
         href: '/dashboard/invoices',
         visible: ['admin', 'manager']
