@@ -19,16 +19,16 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-
+import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { useActionState, useState } from 'react'
 
-import { SubmitButton } from '../shared/SubmitButton'
-import { formatCurrency } from '@/app/utils/formatCurrency'
-import { createInvoice } from '@/app/actions'
 import { useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
+import { createInvoice } from '@/app/actions'
 import { invoiceSchema } from '@/app/utils/zodSchema'
+import { formatCurrency } from '@/app/utils/formatCurrency'
+import { SubmitButton } from '../shared/SubmitButton'
 
 interface iAppProps {
   firstName: string
@@ -37,7 +37,7 @@ interface iAppProps {
   email: string
 }
 
-export function CreateInvoiceForm({
+export function CreateInvoiceForm2({
   address,
   email,
   firstName,
@@ -60,7 +60,7 @@ export function CreateInvoiceForm({
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [rate, setRate] = useState('')
   const [quantity, setQuantity] = useState('')
-  const [currency, setCurrency] = useState('GBP')
+  const [currency, setCurrency] = useState('USD')
 
   const calcualteTotal = (Number(quantity) || 0) * (Number(rate) || 0)
 
@@ -79,6 +79,7 @@ export function CreateInvoiceForm({
             name={fields.total.name}
             value={calcualteTotal}
           />
+
           <div className='mb-6 flex w-fit flex-col gap-1'>
             <div className='flex items-center gap-4'>
               <Badge variant='secondary'>Draft</Badge>
@@ -115,7 +116,7 @@ export function CreateInvoiceForm({
             <div>
               <Label>Currency</Label>
               <Select
-                defaultValue='GBP'
+                defaultValue='USD'
                 name={fields.currency.name}
                 key={fields.currency.key}
                 onValueChange={value => setCurrency(value)}
@@ -124,7 +125,9 @@ export function CreateInvoiceForm({
                   <SelectValue placeholder='Select Currency' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='GBP'>UK Pound -- GBP</SelectItem>
+                  <SelectItem value='USD'>
+                    United States Dollar -- USD
+                  </SelectItem>
                   <SelectItem value='EUR'>Euro -- EUR</SelectItem>
                 </SelectContent>
               </Select>
@@ -139,24 +142,24 @@ export function CreateInvoiceForm({
                 <Input
                   name={fields.fromName.name}
                   key={fields.fromName.key}
-                  defaultValue={firstName + ' ' + lastName}
                   placeholder='Your Name'
+                  defaultValue={firstName + ' ' + lastName}
                 />
                 <p className='text-sm text-red-500'>{fields.fromName.errors}</p>
                 <Input
+                  placeholder='Your Email'
                   name={fields.fromEmail.name}
                   key={fields.fromEmail.key}
                   defaultValue={email}
-                  placeholder='Your Email'
                 />
                 <p className='text-sm text-red-500'>
                   {fields.fromEmail.errors}
                 </p>
                 <Input
+                  placeholder='Your Address'
                   name={fields.fromAddress.name}
                   key={fields.fromAddress.key}
                   defaultValue={address}
-                  placeholder='Your Address'
                 />
                 <p className='text-sm text-red-500'>
                   {fields.fromAddress.errors}
@@ -212,7 +215,7 @@ export function CreateInvoiceForm({
                     <CalendarIcon />
 
                     {selectedDate ? (
-                      new Intl.DateTimeFormat('en-GB', {
+                      new Intl.DateTimeFormat('en-US', {
                         dateStyle: 'long'
                       }).format(selectedDate)
                     ) : (
@@ -222,12 +225,10 @@ export function CreateInvoiceForm({
                 </PopoverTrigger>
                 <PopoverContent>
                   <Calendar
-                    captionLayout='dropdown-buttons'
                     selected={selectedDate}
                     onSelect={date => setSelectedDate(date || new Date())}
                     mode='single'
-                    fromYear={2025}
-                    toYear={2099}
+                    fromDate={new Date()}
                   />
                 </PopoverContent>
               </Popover>
