@@ -1,14 +1,36 @@
 import { Logo } from '@/components/shared/Logo'
 import Menu from '@/components/shared/Menu'
 import Navbar from '@/components/shared/Navbar'
+import db from '@/lib/db'
+import { requireUser } from '@/lib/requireUser'
 import { File } from 'lucide-react'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default function DashboardLayout({
+async function getUser(userId: string) {
+  const data = await db.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      firstName: true,
+      lastName: true,
+      address: true
+    }
+  })
+
+  if (!data?.firstName || !data.lastName || !data.address) {
+    redirect('/onboarding')
+  }
+}
+
+export default async function DashboardLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await requireUser()
+  const data = await getUser(session.user?.id as string)
   return (
     <div className='flex h-screen'>
       {/* LEFT */}

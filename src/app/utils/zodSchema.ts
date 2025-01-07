@@ -5,3 +5,7 @@ export const onboardingSchema = z.object({
   lastName: z.string().min(2, 'Last name is required'),
   address: z.string().min(2, 'Address is required')
 })
+
+export const ManagerSchema = z.object({
+  birthday: z.coerce.date({ message: 'Birthday is required!' })
+})
