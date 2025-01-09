@@ -1,11 +1,12 @@
 'use server'
 
 import { parseWithZod } from '@conform-to/zod'
-
+import { Resend } from 'resend'
 import { invoiceSchema, onboardingSchema } from '@/app/utils/zodSchema'
 import { redirect } from 'next/navigation'
 import db from '@/lib/db'
 import { requireUser } from '@/lib/requireUser'
+import { InvoiceFormEmail } from '@/emails/Invoice-form-email'
 
 export async function onboardUser(prevState: any, formData: FormData) {
   //Get the currently authenticated user
@@ -32,6 +33,8 @@ export async function onboardUser(prevState: any, formData: FormData) {
 
   return redirect('/dashboard')
 }
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function createInvoice(prevState: any, formData: FormData) {
   const session = await requireUser()
@@ -65,6 +68,17 @@ export async function createInvoice(prevState: any, formData: FormData) {
       note: submission.value.note,
       userId: session.user?.id
     }
+  })
+
+  await resend.emails.send({
+    from: 'admin@wpaccpac.org',
+    to: [data.clientEmail],
+    subject: 'You Have a New Invoice',
+    react: InvoiceFormEmail({
+      fromName: data.fromName,
+      fromEmail: data.fromEmail,
+      message: data.invoiceItemDescription
+    })
   })
 
   return redirect('/dashboard/invoices')
