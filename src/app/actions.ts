@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import db from '@/lib/db'
 import { requireUser } from '@/lib/requireUser'
 import { InvoiceFormEmail } from '@/emails/Invoice-form-email'
+import { formatCurrency } from './utils/formatCurrency'
 
 export async function onboardUser(prevState: any, formData: FormData) {
   //Get the currently authenticated user
@@ -77,7 +78,15 @@ export async function createInvoice(prevState: any, formData: FormData) {
     react: InvoiceFormEmail({
       fromName: data.fromName,
       fromEmail: data.fromEmail,
-      message: data.invoiceItemDescription
+      message: data.invoiceItemDescription,
+      clientName: data.clientName,
+      invoiceNumber: data.invoiceNumber,
+      dueDate: data.dueDate,
+      total: data.total
+      // total: formatCurrency({
+      //   amount: submission.value.total,
+      //   currency: submission.value.currency as any,
+      // }),
     })
   })
 

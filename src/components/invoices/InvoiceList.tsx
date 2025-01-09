@@ -29,7 +29,7 @@ async function getData(userId: string) {
       currency: true
     },
     orderBy: {
-      date: 'desc'
+      invoiceNumber: 'desc'
     }
   })
 

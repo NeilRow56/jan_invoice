@@ -1,5 +1,6 @@
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
@@ -15,12 +16,20 @@ interface ContactFormEmailProps {
   fromName: string
   fromEmail: string
   message: string
+  clientName: string
+  invoiceNumber: number
+  dueDate: number
+  total: number
 }
 
 export const InvoiceFormEmail = ({
   fromName,
   fromEmail,
-  message
+  clientName,
+  message,
+  invoiceNumber,
+  dueDate,
+  total
 }: ContactFormEmailProps) => (
   <Html>
     <Head />
@@ -39,13 +48,44 @@ export const InvoiceFormEmail = ({
         <Text
           style={{
             ...text,
-            color: '#ababab',
+            color: '#2803fc',
             marginTop: '12px',
             marginBottom: '38px'
           }}
         >
           Thank you foryour business.
         </Text>
+        <h2>Invoice for {clientName}</h2>
+
+        <p>Dear ,</p>
+
+        <p>
+          I hope this email finds you well. Please find attached your invoice
+          attached below
+        </p>
+
+        <p>Invoice Details:</p>
+        <ul>
+          <li>Invoice Number: {invoiceNumber}</li>
+          <li>Due Date: {dueDate}</li>
+          <li>Total Amount: {total}</li>
+        </ul>
+
+        <p>You can download your invoice by clicking the button below:</p>
+
+        <Button style={button} href='/'>
+          Download Invoice
+        </Button>
+        <p>
+          <a href='xyz'>Link</a>
+        </p>
+
+        <p>
+          If you have any questions or concerns, please don't hesitate to
+          contact us.
+        </p>
+
+        <p>Thank you for your business!</p>
       </Container>
     </Body>
   </Html>
@@ -71,6 +111,15 @@ const h1 = {
   fontWeight: 'bold',
   margin: '40px 0',
   padding: '0'
+}
+
+const button = {
+  fontSize: '14px',
+  backgroundColor: '#2803fc',
+  color: '#fff',
+  lineHeight: 1.5,
+  borderRadius: '0.5em',
+  padding: '12px 24px'
 }
 
 const link = {
